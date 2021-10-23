@@ -1,9 +1,11 @@
 import { uuid } from 'uuidv4';
+import { updateObj } from 'unch';
 
 import { IContributionsRepository } from '@modules/contributions/repositories/IContributionsRepository';
 import { ICreateContributionDTO } from '@modules/contributions/dtos/ICreateContributionDTO';
 
 import { Contribution } from '@entities/Contribution';
+import { IListContributionsDTO } from '@modules/contributions/dtos/IListContributionsDTO';
 
 export class FakeContributionsRepository implements IContributionsRepository {
   private contributions: Contribution[] = [];
@@ -14,22 +16,37 @@ export class FakeContributionsRepository implements IContributionsRepository {
     return findContribution;
   }
 
-  public async findByDream(dreamId: string): Promise<Contribution | undefined> {
-    const findContribution = this.contributions.find(
-      contribution => contribution.dream_id === dreamId,
+  public async list({
+    userId = '1',
+    dreamId,
+  }: IListContributionsDTO): Promise<Contribution[]> {
+    return this.contributions.filter(
+      contribution =>
+        contribution.dream?.user_id === userId &&
+        contribution.dream_id === dreamId,
     );
-
-    return findContribution;
   }
 
   public async create(
     contributionData: ICreateContributionDTO,
   ): Promise<Contribution> {
     const contribution = new Contribution();
+    const lastUserId =
+      this.contributions[this.contributions.length - 1]?.dream?.user_id;
 
-    Object.assign(contribution, { id: uuid() }, contributionData);
+    const newUserId = lastUserId === '1' ? '2' : '1';
 
-    this.contributions.push(contribution);
+    const newContribution = updateObj(contribution, {
+      id: uuid(),
+      dream: {
+        ...contribution.dream,
+        id: contributionData.dream_id,
+        user_id: newUserId,
+      },
+      ...contributionData,
+    });
+
+    this.contributions.push(newContribution);
 
     return contribution;
   }
@@ -42,5 +59,13 @@ export class FakeContributionsRepository implements IContributionsRepository {
     this.contributions[findIndex] = dream;
 
     return dream;
+  }
+
+  public async delete(id: string): Promise<void> {
+    const findIndex = this.contributions.findIndex(
+      contribution => contribution.id === id,
+    );
+
+    this.contributions.splice(findIndex, 1);
   }
 }

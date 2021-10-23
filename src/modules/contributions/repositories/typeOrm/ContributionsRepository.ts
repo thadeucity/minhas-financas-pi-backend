@@ -3,6 +3,7 @@ import { getRepository, Repository } from 'typeorm';
 import { ICreateContributionDTO } from '@modules/contributions/dtos/ICreateContributionDTO';
 
 import { Contribution } from '@entities/Contribution';
+import { IListContributionsDTO } from '@modules/contributions/dtos/IListContributionsDTO';
 import { IContributionsRepository } from '../IContributionsRepository';
 
 export class ContributionsRepository implements IContributionsRepository {
@@ -12,15 +13,24 @@ export class ContributionsRepository implements IContributionsRepository {
     this.ormRepository = getRepository(Contribution);
   }
 
-  public async findById(id: string): Promise<Contribution | undefined> {
-    const contribution = await this.ormRepository.findOne(id);
+  public async list({
+    userId,
+    dreamId,
+  }: IListContributionsDTO): Promise<Contribution[]> {
+    const contributions = await this.ormRepository.find({
+      relations: ['dream'],
+      where: {
+        dream: { user_id: userId },
+        ...(dreamId && { dream_id: dreamId }),
+      },
+    });
 
-    return contribution;
+    return contributions;
   }
 
-  public async findByDream(dreamId: string): Promise<Contribution | undefined> {
-    const contribution = await this.ormRepository.findOne({
-      where: { dream_id: dreamId },
+  public async findById(id: string): Promise<Contribution | undefined> {
+    const contribution = await this.ormRepository.findOne(id, {
+      relations: ['dream'],
     });
 
     return contribution;
@@ -38,5 +48,9 @@ export class ContributionsRepository implements IContributionsRepository {
 
   public async save(dream: Contribution): Promise<Contribution> {
     return this.ormRepository.save(dream);
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
   }
 }
