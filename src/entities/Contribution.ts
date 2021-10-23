@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Dream } from './Dream';
 
@@ -23,6 +24,7 @@ export class Contribution {
   dream_id: string;
 
   @ManyToOne(() => Dream, dream => dream.contributions)
+  @JoinColumn({ name: 'dream_id' })
   dream: Dream;
 
   @CreateDateColumn()
