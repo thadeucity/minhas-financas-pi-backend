@@ -37,8 +37,8 @@ export class CreateContributionService {
 
     const contributions = await this.contributionsRepository.create({
       value: absoluteValue,
-      isNegative,
-      dreamId,
+      is_negative: isNegative,
+      dream_id: dreamId,
     });
 
     return contributions;

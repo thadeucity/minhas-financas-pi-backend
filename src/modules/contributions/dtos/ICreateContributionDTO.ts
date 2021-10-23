@@ -1,5 +1,5 @@
 export interface ICreateContributionDTO {
   value: number;
-  isNegative: boolean;
-  dreamId: string;
+  is_negative: boolean;
+  dream_id: string;
 }
