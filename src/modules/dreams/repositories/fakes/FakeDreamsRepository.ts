@@ -14,8 +14,8 @@ export class FakeDreamsRepository implements IDreamsRepository {
     return findDream;
   }
 
-  public async findByUser(userId: string): Promise<Dream | undefined> {
-    const findDream = this.dreams.find(dream => dream.user_id === userId);
+  public async findAllByUser(userId: string): Promise<Dream[]> {
+    const findDream = this.dreams.filter(dream => dream.user_id === userId);
 
     return findDream;
   }

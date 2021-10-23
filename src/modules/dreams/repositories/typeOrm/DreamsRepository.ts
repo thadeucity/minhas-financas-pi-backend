@@ -18,8 +18,8 @@ export class DreamsRepository implements IDreamsRepository {
     return dream;
   }
 
-  public async findByUser(userId: string): Promise<Dream | undefined> {
-    const dream = await this.ormRepository.findOne({
+  public async findAllByUser(userId: string): Promise<Dream[]> {
+    const dream = await this.ormRepository.find({
       where: { user_id: userId },
     });
 
@@ -27,11 +27,11 @@ export class DreamsRepository implements IDreamsRepository {
   }
 
   public async create(dreamData: ICreateDreamDTO): Promise<Dream> {
-    const appointment = this.ormRepository.create(dreamData);
+    const dream = this.ormRepository.create(dreamData);
 
-    await this.ormRepository.save(appointment);
+    await this.ormRepository.save(dream);
 
-    return appointment;
+    return dream;
   }
 
   public async save(dream: Dream): Promise<Dream> {
