@@ -20,7 +20,7 @@ export class Contribution {
   value: number;
 
   @Column('boolean')
-  deadline: boolean;
+  is_negative: boolean;
 
   @Column('uuid')
   dream_id: string;
