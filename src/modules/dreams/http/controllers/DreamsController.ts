@@ -2,11 +2,16 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import { CreateDreamService } from '@modules/dreams/services/CreateDreamService';
+import { BrowseDreamsByUserService } from '@modules/dreams/services/BrowseDreamsByUserService';
 
 export class DreamsController {
   public async browse(req: Request, res: Response): Promise<Response> {
-    // TODO: Implement browse dreams
-    return res.json([]);
+    const userId = req.user.id;
+
+    const browseDreamByUser = container.resolve(BrowseDreamsByUserService);
+    const dreams = await browseDreamByUser.execute({ userId });
+
+    return res.json(dreams);
   }
 
   public async read(req: Request, res: Response): Promise<Response> {

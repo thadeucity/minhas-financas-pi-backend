@@ -10,5 +10,6 @@ const dreamsRouter = Router();
 dreamsRouter.use(ensureAuthenticated);
 
 dreamsRouter.post('/', dreamsController.add);
+dreamsRouter.get('/', dreamsController.browse);
 
 export { dreamsRouter };
