@@ -4,6 +4,8 @@ import { container } from 'tsyringe';
 import { CreateDreamService } from '@modules/dreams/services/CreateDreamService';
 import { BrowseDreamsByUserService } from '@modules/dreams/services/BrowseDreamsByUserService';
 import { ReadDreamService } from '@modules/dreams/services/ReadDreamService';
+import { UpdateDreamService } from '@modules/dreams/services/UpdateDreamService';
+import { DeleteDreamService } from '@modules/dreams/services/DeleteDreamService';
 
 export class DreamsController {
   public async browse(req: Request, res: Response): Promise<Response> {
@@ -27,8 +29,21 @@ export class DreamsController {
   }
 
   public async edit(req: Request, res: Response): Promise<Response> {
-    // TODO: Implement edit dream
-    return res.json({});
+    const userId = req.user.id;
+    const { id } = req.params;
+    const { name, deadline, value } = req.body;
+
+    const updateDream = container.resolve(UpdateDreamService);
+
+    const dream = await updateDream.execute({
+      dreamId: id,
+      userId,
+      name,
+      deadline,
+      value,
+    });
+
+    return res.json(dream);
   }
 
   public async add(req: Request, res: Response): Promise<Response> {
@@ -48,7 +63,13 @@ export class DreamsController {
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {
-    // TODO: Implement delete dream
-    return res.json({});
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const deleteDream = container.resolve(DeleteDreamService);
+
+    await deleteDream.execute({ dreamId: id, userId });
+
+    return res.status(204).json();
   }
 }

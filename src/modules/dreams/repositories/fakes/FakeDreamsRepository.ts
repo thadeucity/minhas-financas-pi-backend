@@ -39,4 +39,10 @@ export class FakeDreamsRepository implements IDreamsRepository {
 
     return dream;
   }
+
+  public async delete(id: string): Promise<void> {
+    const findIndex = this.dreams.findIndex(dream => dream.id === id);
+
+    this.dreams.splice(findIndex, 1);
+  }
 }
