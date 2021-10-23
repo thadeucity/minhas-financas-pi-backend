@@ -30,7 +30,7 @@ export class Dream {
   @ManyToOne(() => User, user => user.dreams)
   user: User;
 
-  @OneToMany(() => Contribution, contribution => contribution.dream_id)
+  @OneToMany(() => Contribution, contribution => contribution.dream)
   contributions: Contribution[];
 
   @CreateDateColumn()

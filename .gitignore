@@ -8,6 +8,8 @@ dist/
 
 .env
 ormconfig.json
+ormconfig.js
+ormconfig.ts
 
 tmp/*
 !tmp/.gitkeep

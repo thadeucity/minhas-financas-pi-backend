@@ -14,8 +14,8 @@ export class FakeDreamsRepository implements IDreamsRepository {
     return findDream;
   }
 
-  public async findByUser(userId: string): Promise<Dream | undefined> {
-    const findDream = this.dreams.find(dream => dream.user_id === userId);
+  public async findAllByUser(userId: string): Promise<Dream[]> {
+    const findDream = this.dreams.filter(dream => dream.user_id === userId);
 
     return findDream;
   }
@@ -38,5 +38,11 @@ export class FakeDreamsRepository implements IDreamsRepository {
     this.dreams[findIndex] = dream;
 
     return dream;
+  }
+
+  public async delete(id: string): Promise<void> {
+    const findIndex = this.dreams.findIndex(dream => dream.id === id);
+
+    this.dreams.splice(findIndex, 1);
   }
 }
