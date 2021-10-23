@@ -13,9 +13,6 @@ export class Contribution {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column('varchar', { length: 255 })
-  name: string;
-
   @Column('integer')
   value: number;
 

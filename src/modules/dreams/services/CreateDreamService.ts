@@ -53,7 +53,7 @@ export class CreateDreamService {
     const dream = await this.dreamsRepository.create({
       name,
       value,
-      userId,
+      user_id: userId,
       deadline: deadLineDate,
     });
 

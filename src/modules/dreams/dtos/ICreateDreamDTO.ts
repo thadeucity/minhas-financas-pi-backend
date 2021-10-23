@@ -2,5 +2,5 @@ export interface ICreateDreamDTO {
   name: string;
   value: number;
   deadline: Date;
-  userId: string;
+  user_id: string;
 }
