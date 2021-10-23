@@ -10,6 +10,7 @@ interface IRequest {
   value: number;
   isNegative: boolean;
   dreamId: string;
+  userId: string;
 }
 
 @injectable()
@@ -26,11 +27,16 @@ export class CreateContributionService {
     value,
     isNegative,
     dreamId,
+    userId,
   }: IRequest): Promise<Contribution> {
     const checkDreamExists = await this.dreamsRepository.findById(dreamId);
 
     if (!checkDreamExists) {
       throw new AppError('Dream not found');
+    }
+
+    if (checkDreamExists.user_id !== userId) {
+      throw new AppError('You can only contribute to your dreams');
     }
 
     const absoluteValue = Math.abs(value);
