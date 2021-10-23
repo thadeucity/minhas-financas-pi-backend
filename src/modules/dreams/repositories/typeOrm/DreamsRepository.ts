@@ -13,7 +13,9 @@ export class DreamsRepository implements IDreamsRepository {
   }
 
   public async findById(id: string): Promise<Dream | undefined> {
-    const dream = await this.ormRepository.findOne(id);
+    const dream = await this.ormRepository.findOne(id, {
+      relations: ['contributions'],
+    });
 
     return dream;
   }
@@ -36,5 +38,9 @@ export class DreamsRepository implements IDreamsRepository {
 
   public async save(dream: Dream): Promise<Dream> {
     return this.ormRepository.save(dream);
+  }
+
+  public async delete(id: string): Promise<void> {
+    await this.ormRepository.delete(id);
   }
 }

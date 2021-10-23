@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 
 import { CreateDreamService } from '@modules/dreams/services/CreateDreamService';
 import { BrowseDreamsByUserService } from '@modules/dreams/services/BrowseDreamsByUserService';
+import { ReadDreamService } from '@modules/dreams/services/ReadDreamService';
 
 export class DreamsController {
   public async browse(req: Request, res: Response): Promise<Response> {
@@ -15,8 +16,14 @@ export class DreamsController {
   }
 
   public async read(req: Request, res: Response): Promise<Response> {
-    // TODO: Implement read dream
-    return res.json({});
+    const userId = req.user.id;
+    const { id } = req.params;
+
+    const readDream = container.resolve(ReadDreamService);
+
+    const dream = await readDream.execute({ dreamId: id, userId });
+
+    return res.json(dream);
   }
 
   public async edit(req: Request, res: Response): Promise<Response> {
