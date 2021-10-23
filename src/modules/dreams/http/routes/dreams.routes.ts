@@ -1,10 +1,14 @@
 import { Router } from 'express';
 
+import ensureAuthenticated from '@modules/users/http/middlewares/ensureAuthenticated';
 import { DreamsController } from '../controllers/DreamsController';
 
-const dreamsRouter = Router();
 const dreamsController = new DreamsController();
 
-dreamsRouter.post('/', dreamsController.create);
+const dreamsRouter = Router();
+
+dreamsRouter.use(ensureAuthenticated);
+
+dreamsRouter.post('/', dreamsController.add);
 
 export { dreamsRouter };

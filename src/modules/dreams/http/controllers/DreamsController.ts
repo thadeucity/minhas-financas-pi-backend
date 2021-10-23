@@ -4,8 +4,24 @@ import { container } from 'tsyringe';
 import { CreateDreamService } from '@modules/dreams/services/CreateDreamService';
 
 export class DreamsController {
-  public async create(req: Request, res: Response): Promise<Response> {
-    const { name, deadline, userId, value } = req.body;
+  public async browse(req: Request, res: Response): Promise<Response> {
+    // TODO: Implement browse dreams
+    return res.json([]);
+  }
+
+  public async read(req: Request, res: Response): Promise<Response> {
+    // TODO: Implement read dream
+    return res.json({});
+  }
+
+  public async edit(req: Request, res: Response): Promise<Response> {
+    // TODO: Implement edit dream
+    return res.json({});
+  }
+
+  public async add(req: Request, res: Response): Promise<Response> {
+    const userId = req.user.id;
+    const { name, deadline, value } = req.body;
 
     const createDream = container.resolve(CreateDreamService);
 
@@ -17,5 +33,10 @@ export class DreamsController {
     });
 
     return res.json(dream);
+  }
+
+  public async delete(req: Request, res: Response): Promise<Response> {
+    // TODO: Implement delete dream
+    return res.json({});
   }
 }
