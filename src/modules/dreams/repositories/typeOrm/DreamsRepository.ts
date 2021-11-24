@@ -23,6 +23,7 @@ export class DreamsRepository implements IDreamsRepository {
   public async findAllByUser(userId: string): Promise<Dream[]> {
     const dream = await this.ormRepository.find({
       where: { user_id: userId },
+      relations: ['contributions'],
     });
 
     return dream;

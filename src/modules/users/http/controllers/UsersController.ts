@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { filterObjKeys } from 'unch';
 import { container } from 'tsyringe';
 
 import { CreateUserService } from '@modules/users/services/CreateUserService';
@@ -15,6 +16,8 @@ export default class UsersController {
       password,
     });
 
-    return res.json(user);
+    const parsedUser = filterObjKeys(user, ['id', 'name', 'email']);
+
+    return res.json(parsedUser);
   }
 }

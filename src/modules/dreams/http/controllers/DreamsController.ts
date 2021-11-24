@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { filterObjKeys } from 'unch';
 
 import { CreateDreamService } from '@modules/dreams/services/CreateDreamService';
 import { BrowseDreamsByUserService } from '@modules/dreams/services/BrowseDreamsByUserService';
@@ -14,7 +15,11 @@ export class DreamsController {
     const browseDreamByUser = container.resolve(BrowseDreamsByUserService);
     const dreams = await browseDreamByUser.execute({ userId });
 
-    return res.json(dreams);
+    const parsedDreams = dreams.map(dream =>
+      filterObjKeys(dream, ['id', 'name', 'deadline', 'value', 'progression']),
+    );
+
+    return res.json(parsedDreams);
   }
 
   public async read(req: Request, res: Response): Promise<Response> {
@@ -25,7 +30,15 @@ export class DreamsController {
 
     const dream = await readDream.execute({ dreamId: id, userId });
 
-    return res.json(dream);
+    const parsedDream = filterObjKeys(dream, [
+      'id',
+      'name',
+      'deadline',
+      'value',
+      'contributions',
+    ]);
+
+    return res.json(parsedDream);
   }
 
   public async edit(req: Request, res: Response): Promise<Response> {
@@ -43,7 +56,15 @@ export class DreamsController {
       value,
     });
 
-    return res.json(dream);
+    const parsedDream = filterObjKeys(dream, [
+      'id',
+      'name',
+      'deadline',
+      'value',
+      'contributions',
+    ]);
+
+    return res.json(parsedDream);
   }
 
   public async add(req: Request, res: Response): Promise<Response> {
@@ -59,7 +80,14 @@ export class DreamsController {
       value,
     });
 
-    return res.json(dream);
+    const parsedDream = filterObjKeys(dream, [
+      'id',
+      'name',
+      'deadline',
+      'value',
+    ]);
+
+    return res.json(parsedDream);
   }
 
   public async delete(req: Request, res: Response): Promise<Response> {

@@ -19,7 +19,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: 'https://reactgobarber.victoralvarenga.com/', // TODO - Change to real origin
+      origin: 'http://localhost:3000', // TODO - Change to real origin
       optionsSuccessStatus: 200,
     }),
   );
