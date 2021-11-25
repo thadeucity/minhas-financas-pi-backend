@@ -19,7 +19,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: 'http://localhost:3000', // TODO - Change to real origin
+      origin: process.env.FRONT_ENDPOINT, // TODO - Change to real origin
       optionsSuccessStatus: 200,
     }),
   );
